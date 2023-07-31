@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class JobRunner implements ApplicationRunner {
 
@@ -23,7 +25,7 @@ public class JobRunner implements ApplicationRunner {
 
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("name2", "user2")
-//                .addDate("date2", new Date())
+                .addDate("date2", new Date())
                 .toJobParameters();
 
         jobLauncher.run(job, jobParameters);

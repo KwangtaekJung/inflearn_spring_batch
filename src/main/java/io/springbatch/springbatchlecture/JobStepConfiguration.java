@@ -10,25 +10,26 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.job.DefaultJobParametersExtractor;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class JobStepConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job job() {
+    public Job parentJob() {
         return this.jobBuilderFactory.get("parentJob")
                 .start(jobStep(null))
                 .next(step2())
+                .incrementer(new RunIdIncrementer())
                 .build();
     }
 
@@ -58,7 +59,6 @@ public class JobStepConfiguration {
         return extractor;
     }
 
-    @Bean
     public Job childJob() {
         return this.jobBuilderFactory.get("childJob")
                 .start(step1())
