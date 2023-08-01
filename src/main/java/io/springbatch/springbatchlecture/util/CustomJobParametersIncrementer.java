@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture;
+package io.springbatch.springbatchlecture.util;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;

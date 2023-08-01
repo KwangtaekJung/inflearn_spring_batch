@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture;
+package io.springbatch.springbatchlecture.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -10,10 +10,9 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class FlowJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
