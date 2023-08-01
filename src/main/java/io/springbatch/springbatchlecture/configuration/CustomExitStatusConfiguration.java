@@ -1,5 +1,6 @@
 package io.springbatch.springbatchlecture.configuration;
 
+import io.springbatch.springbatchlecture.util.PassCheckingListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -11,29 +12,23 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-//@Configuration
-public class TransitionConfiguration {
+@Configuration
+public class CustomExitStatusConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job transitionJob() {
-        return jobBuilderFactory.get("transitionJob")
+    public Job batchJob() {
+        return jobBuilderFactory.get("batchJob")
                 .start(step1())
                 .on("FAILED")
                 .to(step2())
-                .on("FAILED")
+                .on("PASS")
                 .stop()
-                .from(step1())
-                .on("*")
-                .to(step3())
-                .next(step4())
-                .from(step2())
-                .on("*")
-                .to(step5())
                 .end()
                 .build();
     }
@@ -48,6 +43,7 @@ public class TransitionConfiguration {
 //                        JobParameters jobParameters = stepContribution.getStepExecution().getJobExecution().getJobParameters();
 //                        System.out.println(jobParameters.getString("name"));
 //                        System.out.println(jobParameters.getDate("date"));
+
                         stepContribution.setExitStatus(ExitStatus.FAILED);
                         return RepeatStatus.FINISHED;
                     }
@@ -62,41 +58,13 @@ public class TransitionConfiguration {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
 //                        chunkContext.getStepContext().getStepExecution().setStatus(BatchStatus.COMPLETED);
-                        stepContribution.setExitStatus(ExitStatus.FAILED);
+//                        stepContribution.setExitStatus(ExitStatus.FAILED);
                         System.out.println(">> Step2");
                         return RepeatStatus.FINISHED;
                     }
                 })
+                .listener(new PassCheckingListener())
                 .build();
     }
 
-    @Bean
-    public Step step3() {
-        return stepBuilderFactory.get("Step3")
-                .tasklet((stepContribution, chunkContext) -> {
-                    System.out.println(">> step3");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step4() {
-        return stepBuilderFactory.get("Step4")
-                .tasklet((stepContribution, chunkContext) -> {
-                    System.out.println(">> step4");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step5() {
-        return stepBuilderFactory.get("Step5")
-                .tasklet((stepContribution, chunkContext) -> {
-                    System.out.println(">> step5");
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
 }
