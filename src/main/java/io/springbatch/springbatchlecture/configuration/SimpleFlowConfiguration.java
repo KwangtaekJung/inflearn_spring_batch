@@ -4,15 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Date;
 
 @RequiredArgsConstructor
 @Configuration
@@ -20,10 +25,12 @@ public class SimpleFlowConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final JobRegistry jobRegistry;
 
     @Bean
     public Job simpleJob() {
-        return this.jobBuilderFactory.get("simpleJob")
+        String jobDate = new Date().toString();
+        return this.jobBuilderFactory.get("myBatchJob")
                 .start(flow1())
                 .on("COMPLETED")
                 .to(flow2())
@@ -135,5 +142,12 @@ public class SimpleFlowConfiguration {
                     return RepeatStatus.FINISHED;
                 })
                 .build();
+    }
+
+    @Bean
+    public BeanPostProcessor jobRegistryBeanPostProcessor() throws Exception {
+        JobRegistryBeanPostProcessor postProcessor = new JobRegistryBeanPostProcessor();
+        postProcessor.setJobRegistry(jobRegistry);
+        return postProcessor;
     }
 }
