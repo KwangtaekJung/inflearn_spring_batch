@@ -1,36 +1,33 @@
 package io.springbatch.springbatchlecture.configuration.chunk;
 
-import io.springbatch.springbatchlecture.configuration.chunk.custom.Customer;
-import io.springbatch.springbatchlecture.configuration.chunk.custom.CustomerItemProcessor;
-import io.springbatch.springbatchlecture.configuration.chunk.custom.CustomerItemReader;
-import io.springbatch.springbatchlecture.configuration.chunk.custom.CustomerItemWriter;
+import io.springbatch.springbatchlecture.configuration.chunk.custom.CustomItemStreamReader;
+import io.springbatch.springbatchlecture.configuration.chunk.custom.CustomItemStreamWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
 @Slf4j
-public class ItemReaderItemProcessorItemWriterConfiguration {
+public class ItemStreamConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
 
     @Bean
-    public Job customerJob() {
-        return jobBuilderFactory.get("myCustomItemJob")
+    public Job itemStreamJob() {
+        return jobBuilderFactory.get("myItemStreamJob")
                 .start(step1())
                 .next(step2())
                 .build();
@@ -38,30 +35,24 @@ public class ItemReaderItemProcessorItemWriterConfiguration {
 
     private Step step1() {
         return stepBuilderFactory.get("step1")
-                .<Customer, Customer>chunk(3)
+                .<String, String>chunk(5)
                 .reader(itemReader())
-                .processor(itemProcessor())
                 .writer(itemWriter())
                 .build();
     }
 
-    @Bean
-    public ItemWriter<? super Customer> itemWriter() {
-        return new CustomerItemWriter();
+    public ItemWriter<? super String> itemWriter() {
+        return new CustomItemStreamWriter();
     }
 
-    @Bean
-    public ItemProcessor<? super Customer, ? extends Customer> itemProcessor() {
-        return new CustomerItemProcessor();
-    }
+    public CustomItemStreamReader itemReader() {
+        List<String> items = new ArrayList<>(10);
 
-    @Bean
-    public ItemReader<Customer> itemReader() {
-        return new CustomerItemReader(Arrays.asList(
-                new Customer("user1"),
-                new Customer("user2"),
-                new Customer("user3")
-        ));
+        for (int i = 0; i <= 10; i++) {
+            items.add(String.valueOf(i));
+        }
+
+        return new CustomItemStreamReader(items);
     }
 
     private Step step2() {

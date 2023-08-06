@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.chunk;
+package io.springbatch.springbatchlecture.configuration.chunk.custom;
 
 import lombok.Data;
 
