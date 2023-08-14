@@ -6,11 +6,10 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
-@Component
+//@Component
 public class ScheduledSimpleJobRunner extends JobRunner {
 
     @Autowired
