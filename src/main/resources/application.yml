@@ -8,6 +8,9 @@ spring:
     show-sql: true
     properties:
       hibernate.format_sql: true
+    defer-datasource-initialization: true
+  datasource:
+    initialization-mode: never
 
 ---
 spring:
