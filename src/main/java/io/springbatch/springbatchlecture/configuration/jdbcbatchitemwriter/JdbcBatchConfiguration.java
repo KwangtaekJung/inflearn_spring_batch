@@ -29,13 +29,13 @@ public class JdbcBatchConfiguration {
     public Job jdbcBatchItemWriterJob() throws Exception {
         return jobBuilderFactory.get("jdbcBatchItemWriterJob")
                 .incrementer(new RunIdIncrementer())
-                .start(step1())
+                .start(jdbcBatchItemWriterStep())
                 .build();
     }
 
     @Bean
-    public Step step1() throws Exception {
-        return stepBuilderFactory.get("step1")
+    public Step jdbcBatchItemWriterStep() throws Exception {
+        return stepBuilderFactory.get("jdbcBatchItemWriterStep")
                 .<Customer, Customer>chunk(100)
                 .reader(customItemReader())
                 .writer(customItemWriter())
