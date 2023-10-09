@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.flatfileitemreader;
+package io.springbatch.springbatchlecture.itemreader.flatfile;
 
 import lombok.Data;
 

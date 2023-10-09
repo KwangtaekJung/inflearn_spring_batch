@@ -1,17 +1,3 @@
-spring:
-  profiles:
-    active: local
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
-    defer-datasource-initialization: true
-  datasource:
-    initialization-mode: never
-
 ---
 spring:
   config:
@@ -40,3 +26,11 @@ spring:
       enabled: false
     jdbc:
       initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    defer-datasource-initialization: true
+server:
+  port: 8081

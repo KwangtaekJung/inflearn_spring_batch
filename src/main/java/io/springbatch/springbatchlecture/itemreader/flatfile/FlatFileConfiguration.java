@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.flatfileitemreader;
+package io.springbatch.springbatchlecture.itemreader.flatfile;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -9,23 +9,22 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.transform.Range;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.ClassPathResource;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
-public class FlatFileFixedLengthConfiguration {
+public class FlatFileConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job flatFileFixedLengthReaderJob() {
-        return jobBuilderFactory.get("flatFileFixedLengthReaderJob")
+    public Job flatFileReaderJob() {
+        return jobBuilderFactory.get("flatFileReaderJob")
                 .start(step1())
                 .next(step2())
                 .build();
@@ -39,7 +38,7 @@ public class FlatFileFixedLengthConfiguration {
                 .writer(new ItemWriter() {
                     @Override
                     public void write(List items) throws Exception {
-                        items.forEach(item -> System.out.println(item));
+                        System.out.println("items = " + items);
                     }
                 })
                 .build();
@@ -57,18 +56,29 @@ public class FlatFileFixedLengthConfiguration {
 
     //    @Bean
     public ItemReader itemReader() {
+
+//        FlatFileItemReader<Customer> itemReader = new FlatFileItemReader<>();
+//        itemReader.setResource(new ClassPathResource("/customer.csv"));
+//
+//        DefaultLineMapper<Customer> lineMapper = new DefaultLineMapper<>();
+//        lineMapper.setLineTokenizer(new DelimitedLineTokenizer());
+//        lineMapper.setFieldSetMapper(new CustomerFieldSetMapper());
+//
+//        itemReader.setLineMapper(lineMapper);
+//        itemReader.setLinesToSkip(1);
+//
+//        return itemReader;
+
+        // 스프링이 제공해주신 구현체를 이용하여 구현할 수 있다.
+        // FieldSetMapper, LineMapper 등을 직접 구현하지 않아도 된다.
         return new FlatFileItemReaderBuilder<Customer>()
                 .name("flatFile")
-                .resource(new FileSystemResource("C:\\WorkSpace\\study\\inflearn\\springbatchlecture\\src\\main\\resources\\customer.txt"))
+                .resource(new ClassPathResource("/customer.csv"))
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>())
                 .targetType(Customer.class)
                 .linesToSkip(1)
-                .fixedLength()
-                .strict(false)
-                .addColumns(new Range(1, 5))
-                .addColumns(new Range(6, 9))
-                .addColumns(new Range(10, 11))
-                .names("name", "year", "age")
+                .delimited().delimiter(",")
+                .names("name", "age", "year")
                 .build();
     }
 }

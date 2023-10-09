@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.flatfileitemwriter;
+package io.springbatch.springbatchlecture.iemwriter.flatfile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

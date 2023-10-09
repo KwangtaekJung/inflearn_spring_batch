@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.jdbcbatchitemwriter;
+package io.springbatch.springbatchlecture.iemwriter.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -12,13 +12,12 @@ import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.database.support.MySqlPagingQueryProvider;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class JdbcBatchConfiguration {
     private final JobBuilderFactory jobBuilderFactory;

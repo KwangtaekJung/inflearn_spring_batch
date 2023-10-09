@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.jpapagingitemreader;
+package io.springbatch.springbatchlecture.itemreader.jpapaging;
 
 import lombok.Getter;
 import lombok.Setter;

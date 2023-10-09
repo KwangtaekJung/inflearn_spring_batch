@@ -19,3 +19,8 @@ insert into address (id, location, customer_id) values (7, 'location7', 7);
 insert into address (id, location, customer_id) values (8, 'location8', 8);
 insert into address (id, location, customer_id) values (9, 'location9', 9);
 insert into address (id, location, customer_id) values (10, 'location10', 10);
+
+insert into customer1 (id, first_name, last_name, birthdate) values (1, 'Gildong', 'Hong', now());
+insert into customer1 (id, first_name, last_name, birthdate) values (2, 'Will', 'Smith', now());
+insert into customer1 (id, first_name, last_name, birthdate) values (3, 'Tom', 'Cruise', now());
+insert into customer1 (id, first_name, last_name, birthdate) values (4, 'Tom', 'Hiddleston', now());

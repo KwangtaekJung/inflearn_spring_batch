@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.configuration.flatfileitemwriter;
+package io.springbatch.springbatchlecture.iemwriter.flatfile;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -19,14 +19,14 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class FlatFilesFormattedConfiguration {
+public class FlatFilesDelimitedConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job flatFilesFormattedJob() {
-        return jobBuilderFactory.get("flatFilesFormattedWriterJob")
+    public Job flatFilesDelimitedJob() {
+        return jobBuilderFactory.get("flatFilesDelimitedWriterJob")
                 .incrementer(new RunIdIncrementer())
                 .start(step1())
                 .build();
@@ -44,10 +44,10 @@ public class FlatFilesFormattedConfiguration {
 
         return new FlatFileItemWriterBuilder<>()
                 .name("flatFileWriter")
-                .resource(new FileSystemResource("C:\\WorkSpace\\study\\inflearn\\springbatchlecture\\src\\main\\resources\\flatFileFormattedCustomer.txt"))
+                .resource(new FileSystemResource("C:\\WorkSpace\\study\\inflearn\\springbatchlecture\\src\\main\\resources\\flatFileCustomer.txt"))
                 .append(true)
-                .formatted()
-                .format("%-2d%-15s%-2d")
+                .delimited()
+                .delimiter("|")
                 .names(new String[]{"id", "name", "age"})
                 .build();
     }
