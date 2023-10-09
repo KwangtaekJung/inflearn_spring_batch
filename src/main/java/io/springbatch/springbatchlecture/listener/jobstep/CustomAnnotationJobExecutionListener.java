@@ -1,16 +1,17 @@
-package io.springbatch.springbatchlecture.listener;
+package io.springbatch.springbatchlecture.listener.jobstep;
 
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.annotation.AfterJob;
+import org.springframework.batch.core.annotation.BeforeJob;
 
-public class CustomJobExecutionListener implements JobExecutionListener {
-    @Override
+public class CustomAnnotationJobExecutionListener {
+    @BeforeJob
     public void beforeJob(JobExecution jobExecution) {
         System.out.println("Job is started");
         System.out.println("jobName : " + jobExecution.getJobInstance().getJobName());
     }
 
-    @Override
+    @AfterJob
     public void afterJob(JobExecution jobExecution) {
         long startTime = jobExecution.getStartTime().getTime();
         long endTime = jobExecution.getEndTime().getTime();

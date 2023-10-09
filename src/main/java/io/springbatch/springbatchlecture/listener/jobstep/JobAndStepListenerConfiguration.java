@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.listener;
+package io.springbatch.springbatchlecture.listener.jobstep;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

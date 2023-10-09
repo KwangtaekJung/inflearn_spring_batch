@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.listener;
+package io.springbatch.springbatchlecture.listener.jobstep;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
